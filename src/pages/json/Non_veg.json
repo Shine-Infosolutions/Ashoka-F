@@ -3,7 +3,7 @@
   "menu_name": "ROYAL VEG MENU",
   "categories": [
     {
-      "name": "WELCOME DRINKS",
+      "name": "WELCOME_DRINKS",
       "items": [
         "SOFT DRINK",
         "FRUIT PUNCH",
@@ -20,7 +20,7 @@
       ]
     },
     {
-      "name": "STARTER VEG",
+      "name": "STARTER_VEG",
       "items": [
         "PANEER TIKKA",
         "CHILLY PANEER",
@@ -59,7 +59,7 @@
     
     },
     {
-      "name": "MAIN COURSE",
+      "name": "MAIN_COURSE",
       "items": [
         "BUTTER CHICKEN",
         "CHICKEN DO PYAZA",
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "name": "MAIN COURSE(PANEER)",
+      "name": "MAIN_COURSE_PANEER",
       "items": [
         "PANEER KADHAI",
         "CHEESE BUTTER MASALA",

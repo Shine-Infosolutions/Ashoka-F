@@ -2,11 +2,11 @@
   "Silver": {
     "Veg": {
       "STARTERS_GROUP": 3,
-      "WELCOME DRINKS": 3,
-      "STARTER VEG": 3,
+      "WELCOME_DRINKS": 3,
+      "STARTER_VEG": 3,
       "SALAD": 1,
       "RAITA": 1,
-      "MAIN COURSE(PANEER)": 2,
+      "MAIN_COURSE_PANEER": 2,
       "VEGETABLES": 2,
       "DAL": 1,
       "RICE": 1,
@@ -18,11 +18,11 @@
   "Gold": {
     "Veg": {
       "STARTERS_GROUP": 3,
-      "WELCOME DRINKS": 3,
-      "STARTER VEG": 3,
+      "WELCOME_DRINKS": 3,
+      "STARTER_VEG": 3,
       "SALAD": 1,
       "RAITA": 1,
-      "MAIN COURSE(PANEER)": 2,
+      "MAIN_COURSE_PANEER": 2,
       "VEGETABLES": 2,
       "DAL": 1,
       "RICE": 1,
