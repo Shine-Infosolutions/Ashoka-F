@@ -338,7 +338,7 @@ const AddBooking = () => {
         Array.isArray(payload.statusHistory)
       );
       const response = await axios.post(
-        "http://localhost:5000/api/bookings/create",
+        "https://ashoka-b.vercel.app/api/bookings/create",
         payload
       );
 

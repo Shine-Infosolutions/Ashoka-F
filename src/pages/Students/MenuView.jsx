@@ -21,7 +21,7 @@ const MenuView = () => {
     const fetchMenu = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/menu/${bookingRef}`
+          `https://ashoka-b.vercel.app/api/menu/${bookingRef}`
         );
         setMenu(res.data.data);
       } catch (error) {
