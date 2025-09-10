@@ -30,13 +30,13 @@
       "DESSERTS": 2
     },
     "Non-Veg": {
-        "STARTERS_GROUP": 3,
-      "WELCOME DRINKS": 3,
-      "STARTER VEG": 3,
+      "STARTERS_GROUP": 3,
+      "WELCOME_DRINKS": 3,
+      "STARTER_VEG": 3,
       "SALAD": 1,
       "RAITA": 1,
-      "MAIN COURSE(PANEER)": 1,
-      "MAIN COURSE": 2,
+      "MAIN_COURSE_PANEER": 1,
+      "MAIN_COURSE": 2,
       "VEGETABLES": 2,
       "DAL": 1,
       "RICE": 1,
