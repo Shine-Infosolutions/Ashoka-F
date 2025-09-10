@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
-import Logo from "/src/assets/pcs.png";
+import Logo from "/src/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
 const MenuView = () => {
@@ -76,11 +76,11 @@ const MenuView = () => {
           <img
             src={Logo}
             alt="logo"
-            className="w-[130px] h-[130px] mx-auto mb-4"
+            className="w-[220px] h-[110px] mx-auto mb-4"
           />
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl drop-shadow">
-            BUDHHA AVENUE
-          </h2>
+          {/* <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl drop-shadow">
+            ASHOKA HOTEL
+          </h2> */}
         </div>
         <div className="flex justify-end mb-4">
           <button
