@@ -21,11 +21,11 @@ import {
 const RATE_CONFIG = {
   Veg: {
     Silver: {
-      basePrice: 1299,
+      basePrice: 1050,
       taxPercent: 18,
     },
     Gold: {
-      basePrice: 1499,
+      basePrice: 1250,
       taxPercent: 18,
     },
     Platinum: {
@@ -35,11 +35,11 @@ const RATE_CONFIG = {
   },
   "Non-Veg": {
     Silver: {
-      basePrice: 1599,
+      basePrice: 1050,
       taxPercent: 18,
     },
     Gold: {
-      basePrice: 1899,
+      basePrice: 1250,
       taxPercent: 18,
     },
     Platinum: {
@@ -238,33 +238,19 @@ const AddBooking = () => {
         categorizedMenu: {
           ...categorizedMenu,
           // Ensure all categories are present, even if empty
-          BEVERAGES: categorizedMenu.BEVERAGES || [],
+          WELCOM_DRINKS: categorizedMenu.BEVERAGES || [],
 
-          SOUP_VEG: categorizedMenu.SOUP_VEG || [],
-          SOUP_NON_VEG: categorizedMenu.SOUP_NON_VEG || [],
+          STARTER_VEG: categorizedMenu.SOUP_VEG || [],
+          SALAD: categorizedMenu.SOUP_NON_VEG || [],
 
-          FISH_SNACKS: categorizedMenu.FISH_SNACKS || [],
-          CHICKEN_SNACKS: categorizedMenu.CHICKEN_SNACKS || [],
-          MUTTON_STARTERS: categorizedMenu.MUTTON_STARTERS || [],
-          DESI_CHEESE_KE_KHAZANE: categorizedMenu.DESI_CHEESE_KE_KHAZANE || [],
-          CHINESE_WOK_SE: categorizedMenu.CHINESE_WOK_SE || [],
-          ITALIAN: categorizedMenu.ITALIAN || [],
-          SALAD_BAR: categorizedMenu.SALAD_BAR || [],
-          CURD_AND_RAITA: categorizedMenu.CURD_AND_RAITA || [],
-          MAIN_COURSE_GHAR_KA_SWAD:
-            categorizedMenu.MAIN_COURSE_GHAR_KA_SWAD || [],
-          VEGETABLES: categorizedMenu.VEGETABLES || [],
-          MAIN_COURSE_PANEER: categorizedMenu.MAIN_COURSE_PANEER || [],
-          MAIN_COURSE_CHICKEN: categorizedMenu.MAIN_COURSE_CHICKEN || [],
-          MAIN_COURSE_MUTTON: categorizedMenu.MAIN_COURSE_MUTTON || [],
-          MAIN_COURSE_FISH_WITH_BONE:
-            categorizedMenu.MAIN_COURSE_FISH_WITH_BONE || [],
-
-          RICE: categorizedMenu.RICE || [],
-          INDIAN_BREADS: categorizedMenu.INDIAN_BREADS || [],
-          DESSERTS: categorizedMenu.DESSERTS || [],
-          ICE_CREAM: categorizedMenu.ICE_CREAM || [],
-          ADDITIONAL: categorizedMenu.ADDITIONAL || [],
+          RAITA: categorizedMenu.FISH_SNACKS || [],
+          MAIN_COURSE_PANEER: categorizedMenu.CHICKEN_SNACKS || [],
+          MAIN_COURSE: categorizedMenu.MUTTON_STARTERS || [],
+          VEGETABLES: categorizedMenu.DESI_CHEESE_KE_KHAZANE || [],
+          DAL: categorizedMenu.CHINESE_WOK_SE || [],
+          RICE: categorizedMenu.ITALIAN || [],
+          BREADS: categorizedMenu.SALAD_BAR || [],
+          DESSERTS: categorizedMenu.CURD_AND_RAITA || [],
         },
       }));
     } catch (error) {
@@ -783,7 +769,7 @@ const AddBooking = () => {
                     <option value="">Select Rate Plan</option>
                     <option value="Silver">Silver</option>
                     <option value="Gold">Gold</option>
-                    <option value="Platinum">Platinum</option>
+                    {/* <option value="Platinum">Platinum</option> */}
                   </select>
                   {errors.ratePlan && (
                     <p className="text-red-500 text-xs mt-1">
@@ -808,7 +794,7 @@ const AddBooking = () => {
                   >
                     <option value="">Select Food Type</option>
                     <option value="Veg">Veg</option>
-                    <option value="Non-Veg">Non-Veg</option>
+                    {form.ratePlan !== "Silver" && <option value="Non-Veg">Non-Veg</option>}
                   </select>
                   {errors.foodType && (
                     <p className="text-red-500 text-xs mt-1">
