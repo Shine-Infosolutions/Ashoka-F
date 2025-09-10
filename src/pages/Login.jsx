@@ -12,14 +12,14 @@ const Login = () => {
 
   // Hardcoded credentials with roles
   const hardcodedUsers = {
-    "BudhhaAvenue01@gmail.com": {
-      password: "Avenue@001",
+    "Hotelashoka@gmail.com": {
+      password: "Ashoka@001",
       role: "Admin",
       name: "Admin User",
       isActive: true,
   
     },
-    "Staffavenue@gmail.com": {
+    "Staffashoka@gmail.com": {
       password: "staff@002",
       role: "Staff",
       name: "Staff User",
@@ -98,7 +98,7 @@ const Login = () => {
         <div className="hero-content max-w-5xl flex-col md:gap-16 lg:flex-row-reverse">
           <div className="text-center lg:text-left">
             <h1 className="text-5xl w-full font-bold text-white">
-              Buddha Avenue
+              ASHOKA HOTEL
             </h1>
           </div>
           <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">

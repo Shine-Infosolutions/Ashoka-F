@@ -97,12 +97,12 @@ const MenuView = () => {
           <div className="px-4 py-5 sm:px-4 bg-gradient-to-r from-[#f7f5ef] to-[#c3ad6b]/30 print:rounded-none print:flex print:items-center print:justify-between">
             <img
               src={Logo}
-              alt="Buddha Avenue Logo"
+              alt="ASHOKA HOTEL Logo"
               className="hidden print:block print:mr-4 print:w-12"
               style={{ maxWidth: "120px" }}
             />
             <h3 className="text-lg leading-6 font-bold text-gray-900 text-center flex-1 print:text-black print:text-center">
-              BUDDHA AVENUE
+              ASHOKA HOTEL
             </h3>
             <div className="hidden print:block print:w-24"></div>
           </div>

@@ -121,7 +121,7 @@ const App = () => {
                   </div>
                 )}
                 <h2 className="font-semibold text-xl mt-3 text-gold">
-                  Budhha Avenue
+                  ASHOKA HOTEL
                 </h2>
               </div>
 
