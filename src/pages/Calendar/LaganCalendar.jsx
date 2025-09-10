@@ -56,7 +56,7 @@ function LaganCalendar() {
     const fetchBookings = async () => {
       try {
         const res = await axios.get(
-          "https://budha-b-main.vercel.app/api/bookings"
+          "http://localhost:5000/api/bookings"
         );
         const grouped = {};
         res.data.forEach((b) => {
@@ -550,7 +550,7 @@ function LaganCalendar() {
                 setSearchLoading(true);
                 try {
                   const resp = await axios.get(
-                    `https://budha-b-main.vercel.app/api/bookings/search?q=${encodeURIComponent(
+                    `http://localhost:5000/api/bookings/search?q=${encodeURIComponent(
                       val
                     )}`
                   );

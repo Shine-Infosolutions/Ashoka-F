@@ -44,7 +44,7 @@ const ListBooking = () => {
     try {
       axios
         .get(
-          `https://budha-b-main.vercel.app/api/bookings/pg?page=${currentPage}`
+          `http://localhost:5000/api/bookings/pg?page=${currentPage}`
         )
         .then((res) => {
           if (res.data) {
@@ -73,7 +73,7 @@ const ListBooking = () => {
   const fetchAllData = () => {
     try {
       axios
-        .get(`https://budha-b-main.vercel.app/api/bookings`)
+        .get(`http://localhost:5000/api/bookings`)
         .then((res) => {
           if (res.data) {
             console.log("All Data:", res.data);
@@ -98,7 +98,7 @@ const ListBooking = () => {
     setLoading(true);
     try {
       axios
-        .delete(`https://budha-b-main.vercel.app/little/achiver/${id}`)
+        .delete(`http://localhost:5000/little/achiver/${id}`)
         .then((res) => {
           console.log(res);
           if (res.data) {
@@ -159,7 +159,7 @@ const ListBooking = () => {
     // Send API request to update status in backend
     axios
       .put(
-        `https://budha-b-main.vercel.app/little/achiver/update-status/${id}`,
+        `http://localhost:5000/little/achiver/update-status/${id}`,
         {
           status: updatedStatus, // Boolean status value
         }
@@ -265,7 +265,7 @@ const ListBooking = () => {
       try {
         axios
           .get(
-            `https://budha-b-main.vercel.app/api/bookings/search?q=${searchQuery}`
+            `http://localhost:5000/api/bookings/search?q=${searchQuery}`
           )
           .then((res) => {
             console.log(res);

@@ -20,7 +20,7 @@ const CustomerMenuChange = () => {
       setError(null);
       try {
         const res = await axios.get(
-          `https://budha-b-main.vercel.app/api/menu/all/${customerRef}`
+          `http://localhost:5000/api/menu/all/${customerRef}`
         );
         setBooking(res.data.booking);
         console.log(res.data.booking);
@@ -38,7 +38,7 @@ const CustomerMenuChange = () => {
     try {
       setLoading(true);
       await axios.put(
-        `https://budha-b-main.vercel.app/api/menu/update/${customerRef}`,
+        `http://localhost:5000/api/menu/update/${customerRef}`,
         { categorizedMenu }
       );
       toast.success("Menu updated successfully!");

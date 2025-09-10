@@ -217,7 +217,7 @@ const UpdateBooking = () => {
 
   const fetchBookingDetail = () => {
     axios
-      .get(`https://budha-b-main.vercel.app/api/bookings/${id}`)
+      .get(`http://localhost:5000/api/bookings/${id}`)
       .then((res) => {
         if (res.data) {
           const bookingData = res.data.data || res.data;
@@ -556,7 +556,7 @@ const UpdateBooking = () => {
     console.log("Updating booking with data:", payload);
 
     axios
-      .put(`https://budha-b-main.vercel.app/api/bookings/${id}`, payload)
+      .put(`http://localhost:5000/api/bookings/${id}`, payload)
       .then((res) => {
         if (res.data) {
           toast.success("Booking updated successfully!");
