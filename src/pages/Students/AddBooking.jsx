@@ -220,38 +220,12 @@ const AddBooking = () => {
     try {
       console.log("Selected Items:", selectedItems);
       console.log("Categorized Menu:", categorizedMenu);
-      console.log("Received from MenuSelector:", {
-        selectedItems,
-        categorizedMenu,
-      });
-      // Add customerRef and categorizedMenu to payload for further use if needed
-      const payload = {
-        customerRef: String(
-          form.customerRef || form.customerref || form.number
-        ),
-        categorizedMenu: categorizedMenu,
-      };
-      console.log("Payload for menu save:", payload);
+      
+      // Direct mapping - MenuSelector already sends correct format
       setForm((prev) => ({
         ...prev,
         menuItems: selectedItems.join(", "),
-        categorizedMenu: {
-          ...categorizedMenu,
-          // Ensure all categories are present, even if empty
-          WELCOM_DRINKS: categorizedMenu.BEVERAGES || [],
-
-          STARTER_VEG: categorizedMenu.SOUP_VEG || [],
-          SALAD: categorizedMenu.SOUP_NON_VEG || [],
-
-          RAITA: categorizedMenu.FISH_SNACKS || [],
-          MAIN_COURSE_PANEER: categorizedMenu.CHICKEN_SNACKS || [],
-          MAIN_COURSE: categorizedMenu.MUTTON_STARTERS || [],
-          VEGETABLES: categorizedMenu.DESI_CHEESE_KE_KHAZANE || [],
-          DAL: categorizedMenu.CHINESE_WOK_SE || [],
-          RICE: categorizedMenu.ITALIAN || [],
-          BREADS: categorizedMenu.SALAD_BAR || [],
-          DESSERTS: categorizedMenu.CURD_AND_RAITA || [],
-        },
+        categorizedMenu: categorizedMenu,
       }));
     } catch (error) {
       toast.error("Error processing menu selection");

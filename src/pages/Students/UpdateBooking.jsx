@@ -459,31 +459,13 @@ const UpdateBooking = () => {
     setBooking((prev) => ({ ...prev, menuItems: updatedMenuItems }));
   };
 
-  // Handle menu selection from modal
+  // Handle menu selection from modal - don't increment count here
   const handleMenuSelection = (selectedItems, categorizedMenu) => {
-    // Only increment staffEditCount if staff (not admin), menu is changed, and limit not reached
-    setBooking((prev) => {
-      const isMenuChanged =
-        JSON.stringify(prev.menuItems) !== JSON.stringify(selectedItems) ||
-        JSON.stringify(prev.categorizedMenu) !==
-          JSON.stringify(categorizedMenu);
-      let newCount = prev.staffEditCount;
-      // Only increment if staff, menu changed, and staffEditCount < 2, and do NOT block the 2nd edit
-      if (role !== "Admin" && isMenuChanged && prev.staffEditCount >= 2) {
-        newCount = prev.staffEditCount + 1;
-      }
-      // Only allow menu change if staffEditCount < 2 for staff, unlimited for admin
-      if (role !== "Admin" && prev.staffEditCount >= 2) {
-        // Do not update menu or categorizedMenu, just return previous state
-        return prev;
-      }
-      return {
-        ...prev,
-        menuItems: selectedItems,
-        categorizedMenu,
-        staffEditCount: newCount,
-      };
-    });
+    setBooking((prev) => ({
+      ...prev,
+      menuItems: selectedItems,
+      categorizedMenu,
+    }));
   };
 
   const updateBooking = () => {
@@ -501,10 +483,38 @@ const UpdateBooking = () => {
       return;
     }
 
+    // Check if menu was changed and increment staff edit count
+    let updatedStaffEditCount = booking.staffEditCount;
+    if (role !== "Admin") {
+      // Get original menu from server to compare
+      axios.get(`https://ashoka-b.vercel.app/api/bookings/${id}`)
+        .then((res) => {
+          const originalMenu = res.data.categorizedMenu;
+          const isMenuChanged = JSON.stringify(originalMenu) !== JSON.stringify(booking.categorizedMenu);
+          
+          if (isMenuChanged) {
+            updatedStaffEditCount = booking.staffEditCount + 1;
+          }
+          
+          // Continue with update
+          performUpdate(updatedStaffEditCount);
+        })
+        .catch(() => {
+          // If can't fetch original, proceed without incrementing
+          performUpdate(updatedStaffEditCount);
+        });
+    } else {
+      // Admin - proceed without checking
+      performUpdate(updatedStaffEditCount);
+    }
+  };
+
+  const performUpdate = (staffEditCount) => {
     // Build payload with customerRef and categorizedMenu as requested
     const categorizedMenu = booking.categorizedMenu;
     const payload = {
       ...booking,
+      staffEditCount,
       complimentaryRooms:
         booking.complimentaryRooms === ""
           ? 0
@@ -542,10 +552,10 @@ const UpdateBooking = () => {
     // Send the user's role
     payload.role = localStorage.getItem("role") || "Staff";
 
-    // Only include categorizedMenu if staff is allowed to edit menu, or if admin
+    // Only include categorizedMenu if staff hasn't exceeded limit
     const isStaff = payload.role !== "Admin";
-    if (isStaff && booking.staffEditCount >= 2) {
-      // Staff cannot update menu anymore, so remove categorizedMenu from payload
+    if (isStaff && staffEditCount > 2) {
+      // Staff exceeded limit, remove categorizedMenu from payload
       delete payload.categorizedMenu;
     } else if (payload.categorizedMenu && payload.categorizedMenu.customerRef) {
       // Remove customerRef from categorizedMenu if present
@@ -1291,7 +1301,10 @@ const UpdateBooking = () => {
                   </button>
                 </div>
                 <MenuSelector
-                  initialItems={booking.menuItems}
+                  initialItems={booking.categorizedMenu ? 
+                    Object.values(booking.categorizedMenu).flat().filter(item => typeof item === 'string') : 
+                    []
+                  }
                   foodType={booking.foodType}
                   ratePlan={booking.ratePlan}
                   onSave={handleMenuSelection}
