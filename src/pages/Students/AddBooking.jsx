@@ -560,10 +560,10 @@ const AddBooking = () => {
                     required
                   >
                     <option value="">Select Hall Type</option>
-                    <option value="Nirvana">Nirvana</option>
-                    <option value="Mandala">Mandala</option>
-                    <option value="Conference">Conference</option>
-                    <option value="Lawn">Lawn</option>
+                    <option value="Nirvana">Kitty Hall</option>
+                    <option value="Mandala">Banquet Hall</option>
+                    <option value="Conference">Rooftop Hall</option>
+                    <option value="Lawn">Flamingo Rooftop </option>
                   </select>
                   {errors.hall && (
                     <p className="text-red-500 text-xs mt-1">{errors.hall}</p>

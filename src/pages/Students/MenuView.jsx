@@ -16,7 +16,6 @@ const MenuView = () => {
     documentTitle: `Menu_${bookingRef}`,
   });
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -32,7 +31,6 @@ const MenuView = () => {
     };
     if (bookingRef) fetchMenu();
   }, [bookingRef]);
-
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#f7f5ef] to-[#c3ad6b]/30">
@@ -42,7 +40,6 @@ const MenuView = () => {
         </div>
       </div>
     );
-
   if (error)
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-red-100 to-[#c3ad6b]/30">
@@ -52,7 +49,6 @@ const MenuView = () => {
         </div>
       </div>
     );
-
   if (!menu)
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-yellow-100 to-[#c3ad6b]/30">
@@ -62,7 +58,6 @@ const MenuView = () => {
         </div>
       </div>
     );
-
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <button
@@ -161,5 +156,4 @@ const MenuView = () => {
     </div>
   );
 };
-
 export default MenuView;
