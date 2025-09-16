@@ -594,9 +594,7 @@ const UpdateBooking = () => {
       payload.categorizedMenu = rest;
     }
 
-    console.log("Updating booking with data:", payload);
-    console.log("Decoration charge:", payload.decorationCharge);
-    console.log("Music charge:", payload.musicCharge);
+
 
     axios
       .put(`https://ashoka-b.vercel.app/api/bookings/${id}`, payload)

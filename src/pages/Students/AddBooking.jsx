@@ -238,9 +238,6 @@ const AddBooking = () => {
 
   const handleSaveMenu = async (selectedItems, categorizedMenu) => {
     try {
-      console.log("Selected Items:", selectedItems);
-      console.log("Categorized Menu:", categorizedMenu);
-      
       // Direct mapping - MenuSelector already sends correct format
       setForm((prev) => ({
         ...prev,
@@ -312,15 +309,7 @@ const AddBooking = () => {
       };
       const statusBooleans = computeStatusBooleans(payload.statusHistory || []);
       Object.assign(payload, statusBooleans);
-      // Debug: Confirm statusHistory is an array
-      console.log(
-        "Payload being sent to backend:",
-        payload,
-        typeof payload.statusHistory,
-        Array.isArray(payload.statusHistory)
-      );
-      console.log("Decoration charge:", payload.decorationCharge);
-      console.log("Music charge:", payload.musicCharge);
+
       const response = await axios.post(
         "https://ashoka-b.vercel.app/api/bookings/create",
         payload
