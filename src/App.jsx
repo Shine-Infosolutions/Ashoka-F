@@ -129,7 +129,7 @@ const App = () => {
                 <img
                   src={logo}
                   alt="admin"
-                  className="m-auto w-48 h-48 rounded-md object-cover"
+                  className="m-auto h-[120px] w-[230px] rounded-md object-cover"
                 />
                 <h5 className="mt-4  text-xl font-semibold text-black lg:block dark:text-black">
                   {name}

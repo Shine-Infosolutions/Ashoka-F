@@ -55,6 +55,10 @@ const UpdateBooking = () => {
     menuItems: [],
     notes: "",
     discount: "",
+    decorationCharge: "",
+    musicCharge: "",
+    hasDecoration: false,
+    hasMusic: false,
     statusChangedAt: null, // Track when status changes
     staffEditCount: 0, // Added for staff edit limit logic
   });
@@ -131,8 +135,12 @@ const UpdateBooking = () => {
         // GST should be calculated as a percentage of the discounted base
         const gstAmount = (discountedBase * gstPercent) / 100;
         const rateWithGST = discountedBase + gstAmount;
-
-        const total = rateWithGST * paxNum; // Remove room price from calculation
+        const foodTotal = rateWithGST * paxNum;
+        
+        // Add decoration and music charges
+        const decorationCharge = booking.hasDecoration ? (parseFloat(booking.decorationCharge) || 0) : 0;
+        const musicCharge = booking.hasMusic ? (parseFloat(booking.musicCharge) || 0) : 0;
+        const total = foodTotal + decorationCharge + musicCharge;
 
         setBooking((prev) => ({
           ...prev,
@@ -153,6 +161,10 @@ const UpdateBooking = () => {
     booking.foodType,
     booking.gst,
     booking.discount,
+    booking.decorationCharge,
+    booking.musicCharge,
+    booking.hasDecoration,
+    booking.hasMusic,
   ]);
 
   // Calculate room price when rooms change
@@ -313,6 +325,10 @@ const UpdateBooking = () => {
             extraRoomTotalPrice:
               bookingData.extraRoomTotalPrice || bookingData.roomPrice || 0,
             roomOption: bookingData.roomOption || "complimentary", // Add this line
+            decorationCharge: bookingData.decorationCharge || "",
+            musicCharge: bookingData.musicCharge || "",
+            hasDecoration: !!(bookingData.decorationCharge && bookingData.decorationCharge > 0),
+            hasMusic: !!(bookingData.musicCharge && bookingData.musicCharge > 0),
             // ... rest of the fields
           };
 
@@ -327,6 +343,16 @@ const UpdateBooking = () => {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     let val = type === "checkbox" ? checked : value;
+    
+    // Reset charges when unchecking
+    if (name === "hasDecoration" && !checked) {
+      setBooking(prev => ({ ...prev, hasDecoration: false, decorationCharge: "" }));
+      return;
+    }
+    if (name === "hasMusic" && !checked) {
+      setBooking(prev => ({ ...prev, hasMusic: false, musicCharge: "" }));
+      return;
+    }
     setBooking((prev) => {
       let newStatus = prev.bookingStatus;
       let newStatusHistory = [
@@ -487,15 +513,18 @@ const UpdateBooking = () => {
     let updatedStaffEditCount = booking.staffEditCount;
     if (role !== "Admin") {
       // Get original menu from server to compare
-      axios.get(`https://ashoka-b.vercel.app/api/bookings/${id}`)
+      axios
+        .get(`https://ashoka-b.vercel.app/api/bookings/${id}`)
         .then((res) => {
           const originalMenu = res.data.categorizedMenu;
-          const isMenuChanged = JSON.stringify(originalMenu) !== JSON.stringify(booking.categorizedMenu);
-          
+          const isMenuChanged =
+            JSON.stringify(originalMenu) !==
+            JSON.stringify(booking.categorizedMenu);
+
           if (isMenuChanged) {
             updatedStaffEditCount = booking.staffEditCount + 1;
           }
-          
+
           // Continue with update
           performUpdate(updatedStaffEditCount);
         })
@@ -519,6 +548,8 @@ const UpdateBooking = () => {
         booking.complimentaryRooms === ""
           ? 0
           : Number(booking.complimentaryRooms),
+      decorationCharge: booking.hasDecoration ? (parseFloat(booking.decorationCharge) || 0) : 0,
+      musicCharge: booking.hasMusic ? (parseFloat(booking.musicCharge) || 0) : 0,
       customerRef: String(
         booking.customerRef || booking.customerref || booking.number
       ),
@@ -564,6 +595,8 @@ const UpdateBooking = () => {
     }
 
     console.log("Updating booking with data:", payload);
+    console.log("Decoration charge:", payload.decorationCharge);
+    console.log("Music charge:", payload.musicCharge);
 
     axios
       .put(`https://ashoka-b.vercel.app/api/bookings/${id}`, payload)
@@ -938,10 +971,10 @@ const UpdateBooking = () => {
                     onChange={handleInputChange}
                     value={booking.hall}
                   >
-                    <option value="Nirvana">Nirvana</option>
-                    <option value="Mandala">Mandala</option>
-                    <option value="Conference">Conference</option>
-                    <option value="Lawn">Lawn</option>
+                    <option value="Kitty Hall">Kitty Hall</option>
+                    <option value="Banquet Hall">Banquet Hall</option>
+                    <option value="Rooftop Hall">Rooftop Hall</option>
+                    <option value="Flamingo Rooftop">Flamingo Rooftop </option>
                   </select>
                 </div>
               </div>
@@ -1102,9 +1135,10 @@ const UpdateBooking = () => {
                     onChange={handleInputChange}
                     value={booking.hall}
                   >
-                    <option value="Nirvana">Nirvana</option>
-                    <option value="Mandala">Mandala</option>
-                    <option value="Conference">Conference</option>
+                    <option value="Kitty Hall">Kitty Hall</option>
+                    <option value="Banquet Hall">Banquet Hall</option>
+                    <option value="Rooftop Hall">Rooftop Hall</option>
+                    <option value="Flamingo Rooftop">Flamingo Rooftop </option>
                   </select>
                 </div>
               </div>
@@ -1301,9 +1335,12 @@ const UpdateBooking = () => {
                   </button>
                 </div>
                 <MenuSelector
-                  initialItems={booking.categorizedMenu ? 
-                    Object.values(booking.categorizedMenu).flat().filter(item => typeof item === 'string') : 
-                    []
+                  initialItems={
+                    booking.categorizedMenu
+                      ? Object.values(booking.categorizedMenu)
+                          .flat()
+                          .filter((item) => typeof item === "string")
+                      : []
                   }
                   foodType={booking.foodType}
                   ratePlan={booking.ratePlan}
@@ -1328,6 +1365,64 @@ const UpdateBooking = () => {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
+              {/* Decoration */}
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    name="hasDecoration"
+                    checked={booking.hasDecoration}
+                    onChange={handleInputChange}
+                    className="rounded border-gray-300 text-[#c3ad6b] focus:ring-[#c3ad6b]"
+                  />
+                  <label className="text-sm font-medium text-gray-700">
+                    Decoration Charge
+                  </label>
+                </div>
+                {booking.hasDecoration && (
+                  <div className="relative">
+                    <FaRupeeSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="number"
+                      name="decorationCharge"
+                      className="pl-10 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2 px-3"
+                      onChange={handleInputChange}
+                      value={booking.decorationCharge}
+                      placeholder="Enter amount"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Music */}
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    name="hasMusic"
+                    checked={booking.hasMusic}
+                    onChange={handleInputChange}
+                    className="rounded border-gray-300 text-[#c3ad6b] focus:ring-[#c3ad6b]"
+                  />
+                  <label className="text-sm font-medium text-gray-700">
+                    Music Charge
+                  </label>
+                </div>
+                {booking.hasMusic && (
+                  <div className="relative">
+                    <FaRupeeSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="number"
+                      name="musicCharge"
+                      className="pl-10 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2 px-3"
+                      onChange={handleInputChange}
+                      value={booking.musicCharge}
+                      placeholder="Enter amount"
+                    />
+                  </div>
+                )}
+              </div>
+
               {/* Rate Per Pax */}
               <div className="space-y-1">
                 <label className="block text-sm font-medium text-gray-700">

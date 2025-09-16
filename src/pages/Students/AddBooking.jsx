@@ -103,10 +103,14 @@ const AddBooking = () => {
     isConfirmed: false,
     categorizedMenu: {},
     discount: "",
+    decorationCharge: "",
+    musicCharge: "",
+    hasDecoration: false,
+    hasMusic: false,
     staffEditCount: 0, // Add this field for new bookings
   });
 
-  // Calculate total when pax, ratePlan, foodType, gst, or discount changes (GST as percentage)
+  // Calculate total when pax, ratePlan, foodType, gst, discount, decoration, or music charges change
   useEffect(() => {
     if (form.pax && form.ratePlan && form.foodType && form.gst) {
       const rateInfo = RATE_CONFIG[form.foodType][form.ratePlan];
@@ -119,7 +123,13 @@ const AddBooking = () => {
         const discountedBase = basePrice - discount;
         const gstAmount = (discountedBase * gstPercent) / 100;
         const rateWithGST = discountedBase + gstAmount;
-        const total = rateWithGST * paxNum;
+        const foodTotal = rateWithGST * paxNum;
+        
+        // Add decoration and music charges
+        const decorationCharge = form.hasDecoration ? (parseFloat(form.decorationCharge) || 0) : 0;
+        const musicCharge = form.hasMusic ? (parseFloat(form.musicCharge) || 0) : 0;
+        const total = foodTotal + decorationCharge + musicCharge;
+        
         setForm((prev) => ({
           ...prev,
           total: total ? total.toFixed(2) : "",
@@ -134,7 +144,7 @@ const AddBooking = () => {
         ratePerPax: "",
       }));
     }
-  }, [form.pax, form.ratePlan, form.foodType, form.gst, form.discount]);
+  }, [form.pax, form.ratePlan, form.foodType, form.gst, form.discount, form.decorationCharge, form.musicCharge]);
 
   // Remove this useEffect for balance calculation
   useEffect(() => {
@@ -171,6 +181,16 @@ const AddBooking = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     let val = type === "checkbox" ? checked : value;
+    
+    // Reset charges when unchecking
+    if (name === "hasDecoration" && !checked) {
+      setForm(prev => ({ ...prev, hasDecoration: false, decorationCharge: "" }));
+      return;
+    }
+    if (name === "hasMusic" && !checked) {
+      setForm(prev => ({ ...prev, hasMusic: false, musicCharge: "" }));
+      return;
+    }
     // Discount validation
     if (name === "discount") {
       let maxDiscount = Infinity;
@@ -275,6 +295,8 @@ const AddBooking = () => {
         ...form,
         complimentaryRooms:
           form.complimentaryRooms === "" ? 0 : Number(form.complimentaryRooms),
+        decorationCharge: form.hasDecoration ? (parseFloat(form.decorationCharge) || 0) : 0,
+        musicCharge: form.hasMusic ? (parseFloat(form.musicCharge) || 0) : 0,
         statusHistory: [
           {
             status: form.bookingStatus,
@@ -297,6 +319,8 @@ const AddBooking = () => {
         typeof payload.statusHistory,
         Array.isArray(payload.statusHistory)
       );
+      console.log("Decoration charge:", payload.decorationCharge);
+      console.log("Music charge:", payload.musicCharge);
       const response = await axios.post(
         "https://ashoka-b.vercel.app/api/bookings/create",
         payload
@@ -560,10 +584,10 @@ const AddBooking = () => {
                     required
                   >
                     <option value="">Select Hall Type</option>
-                    <option value="Nirvana">Kitty Hall</option>
-                    <option value="Mandala">Banquet Hall</option>
-                    <option value="Conference">Rooftop Hall</option>
-                    <option value="Lawn">Flamingo Rooftop </option>
+                    <option value="Kitty Hall">Kitty Hall</option>
+                    <option value="Banquet Hall">Banquet Hall</option>
+                    <option value="Rooftop Hall">Rooftop Hall</option>
+                    <option value="Flamingo Rooftop">Flamingo Rooftop </option>
                   </select>
                   {errors.hall && (
                     <p className="text-red-500 text-xs mt-1">{errors.hall}</p>
@@ -792,22 +816,63 @@ const AddBooking = () => {
                 </h2>
               </div>
 
-              <div className="grid md:grid-cols-4 gap-6">
-                {/* Advance */}
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Advance Payment
-                  </label>
-                  <div className="relative">
-                    <FaRupeeSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div className="grid md:grid-cols-3 gap-6">
+                {/* Decoration */}
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
                     <input
-                      type="number"
-                      name="advance"
-                      className="pl-10 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2 px-3"
+                      type="checkbox"
+                      name="hasDecoration"
+                      checked={form.hasDecoration}
                       onChange={handleChange}
-                      value={form.advance}
+                      className="rounded border-gray-300 text-[#c3ad6b] focus:ring-[#c3ad6b]"
                     />
+                    <label className="text-sm font-medium text-gray-700">
+                      Decoration Charge
+                    </label>
                   </div>
+                  {form.hasDecoration && (
+                    <div className="relative">
+                      <FaRupeeSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="number"
+                        name="decorationCharge"
+                        className="pl-10 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2 px-3"
+                        onChange={handleChange}
+                        value={form.decorationCharge}
+                        placeholder="Enter amount"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Music */}
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      name="hasMusic"
+                      checked={form.hasMusic}
+                      onChange={handleChange}
+                      className="rounded border-gray-300 text-[#c3ad6b] focus:ring-[#c3ad6b]"
+                    />
+                    <label className="text-sm font-medium text-gray-700">
+                      Music Charge
+                    </label>
+                  </div>
+                  {form.hasMusic && (
+                    <div className="relative">
+                      <FaRupeeSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="number"
+                        name="musicCharge"
+                        className="pl-10 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2 px-3"
+                        onChange={handleChange}
+                        value={form.musicCharge}
+                        placeholder="Enter amount"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* GST (manual input) */}
@@ -823,6 +888,25 @@ const AddBooking = () => {
                       onChange={handleChange}
                       value={form.gst}
                       placeholder="Enter GST manually"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6 mt-4">
+                {/* Advance */}
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Advance Payment
+                  </label>
+                  <div className="relative">
+                    <FaRupeeSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="number"
+                      name="advance"
+                      className="pl-10 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2 px-3"
+                      onChange={handleChange}
+                      value={form.advance}
                     />
                   </div>
                 </div>
@@ -950,16 +1034,28 @@ const AddBooking = () => {
                         const gstAmount = (discountedBase * gstPercent) / 100;
                         const rateWithGST = discountedBase + gstAmount;
                         const pax = parseInt(form.pax) || 0;
-                        const total = (rateWithGST * pax).toFixed(2);
+                        const foodTotal = (rateWithGST * pax);
+                        const decorationCharge = form.hasDecoration ? (parseFloat(form.decorationCharge) || 0) : 0;
+                        const musicCharge = form.hasMusic ? (parseFloat(form.musicCharge) || 0) : 0;
+                        const grandTotal = foodTotal + decorationCharge + musicCharge;
                         return (
                           <>
-                            <span className="text-lg font-bold text-[#c3ad6b]">
-                              ₹{rateWithGST.toFixed(2)}
-                            </span>
-                            <span className="text-gray-700"> x {pax} = </span>
-                            <span className="text-lg font-bold text-[#c3ad6b]">
-                              ₹{total}
-                            </span>
+                            <div className="text-sm text-gray-600">
+                              Food: ₹{rateWithGST.toFixed(2)} x {pax} = ₹{foodTotal.toFixed(2)}
+                            </div>
+                            {decorationCharge > 0 && (
+                              <div className="text-sm text-gray-600">
+                                Decoration: ₹{decorationCharge}
+                              </div>
+                            )}
+                            {musicCharge > 0 && (
+                              <div className="text-sm text-gray-600">
+                                Music: ₹{musicCharge}
+                              </div>
+                            )}
+                            <div className="text-lg font-bold text-[#c3ad6b] mt-1">
+                              Total: ₹{grandTotal.toFixed(2)}
+                            </div>
                             <div className="text-xs text-gray-500 mt-1">
                               Rate per pax: ₹{discountedBase} + ₹
                               {gstAmount.toFixed(2)} (GST) = ₹
