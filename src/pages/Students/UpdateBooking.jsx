@@ -75,11 +75,11 @@ const UpdateBooking = () => {
   const RATE_CONFIG = {
     Veg: {
       Silver: {
-        basePrice: 1299,
+        basePrice: 1050,
         taxPercent: 18,
       },
       Gold: {
-        basePrice: 1499,
+        basePrice: 1250,
         taxPercent: 18,
       },
       Platinum: {
