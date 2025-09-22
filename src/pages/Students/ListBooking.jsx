@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ColorRing } from "react-loader-spinner";
 import { AiFillFileExcel } from "react-icons/ai";
 import { CSVLink } from "react-csv";
-import { FiSearch, FiX, FiPlus, FiEdit, FiEye } from "react-icons/fi";
+import { FiSearch, FiX, FiPlus, FiEdit, FiEye, FiFileText } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 // import noimg from "../../assets/noimg.png";
 import SlideToggle from "../toggle/SlideToggle";
@@ -504,9 +504,6 @@ const ListBooking = () => {
                           <FiEye /> View Menu
                         </button>
                       </Link>
-                      <div className="flex-1">
-                        <ChefPDFPreview booking={item} />
-                      </div>
                     </div>
                   </div>
                 ))}
@@ -585,7 +582,6 @@ const ListBooking = () => {
                             <FiEye /> View Menu
                           </button>
                         </Link>
-                        <ChefPDFPreview booking={item} />
                         <button
                           onClick={() => {
                             let raw = String(item.number || "").replace(

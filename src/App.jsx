@@ -8,6 +8,8 @@ import AddBooking from "./pages/Students/AddBooking";
 import UpdateBooking from "./pages/Students/UpdateBooking";
 import ListBooking from "./pages/Students/ListBooking";
 import MenuView from "./pages/Students/MenuView";
+import Invoice from "./pages/Students/Invoice";
+import SharedInvoice from "./pages/Students/SharedInvoice";
 
 import logo from "./assets/pcs.png";
 
@@ -67,6 +69,18 @@ const App = () => {
       setActiveLink("dashboard");
     }
   }, [location.pathname]);
+
+  // Check if current route is shared invoice
+  const isSharedInvoice = location.pathname.startsWith('/shared-invoice');
+  
+  // If it's shared invoice route, render only that component
+  if (isSharedInvoice) {
+    return (
+      <Routes>
+        <Route path="/shared-invoice/:id" element={<SharedInvoice />} />
+      </Routes>
+    );
+  }
 
   return (
     <>
@@ -314,6 +328,7 @@ const App = () => {
                    <Route path="/list-booking" element={<ListBooking />} />
                    <Route path="/update-booking/:id" element={<UpdateBooking />} />
                    <Route path="/menu-view/:bookingRef" element={<MenuView />} />
+                   <Route path="/invoice/:id" element={<Invoice />} />
            
               </Routes>
             </div>
