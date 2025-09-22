@@ -90,7 +90,7 @@ const Login = () => {
       <div
         style={{
           backgroundImage:
-            "url(https://cf.bstatic.com/xdata/images/hotel/max1024x768/547211264.jpg?k=b959e59a2a5611d0b9bdedae3e9b1290fca7e11c23f60b5d4c2b9e72d8814b91&o=&hp=1)",
+            "url(https://cf.bstatic.com/xdata/images/hotel/max1024x768/547211264.jpg?k=b959e59a2a5611d0b9bdedae3e9bhttps://ashoka-b.vercel.app0fca7e11c23f60b5d4c2b9e72d8814b91&o=&hp=1)",
         }}
         className="hero min-h-screen bg-base-200"
       >
