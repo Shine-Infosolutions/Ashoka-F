@@ -18,6 +18,14 @@ const Invoice = () => {
     documentTitle: `Invoice_${booking?.name}_${booking?.startDate}`,
   });
 
+  const handleShare = () => {
+    const baseUrl = window.location.origin;
+    const invoiceUrl = `${baseUrl}/shared-invoice/${id}`;
+    const message = `Hi ${booking?.name}, here is your booking invoice from Ashoka Hotel: ${invoiceUrl}`;
+    const whatsappUrl = `https://wa.me/${booking?.whatsapp || booking?.number}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   useEffect(() => {
     const fetchBooking = async () => {
       try {
@@ -84,7 +92,13 @@ const Invoice = () => {
       </button>
 
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-end mb-4 print:hidden">
+        <div className="flex justify-end gap-3 mb-4 print:hidden">
+          <button
+            onClick={handleShare}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition-colors font-semibold"
+          >
+            📱 Share on WhatsApp
+          </button>
           <button
             onClick={handlePrint}
             className="inline-flex items-center gap-2 px-4 py-2 bg-[#c3ad6b] text-white rounded-lg shadow hover:bg-[#b39b5a] transition-colors font-semibold"
@@ -225,37 +239,29 @@ const Invoice = () => {
               <div className="bg-gray-50 rounded-lg p-6 print:bg-white print:p-2 print:border print:border-gray-300">
                 <div className="space-y-3 print:space-y-1 print:text-xs print:text-black">
                   <div className="flex justify-between">
-                    <span>Base Amount ({booking.pax} pax)</span>
-                    <span>₹{(() => {
-                      const baseRate = parseFloat(booking.ratePerPax) || 0;
-                      const gstPercent = parseFloat(booking.gst) || 0;
-                      const discount = parseFloat(booking.discount) || 0;
-                      const baseAmount = baseRate / (1 + gstPercent / 100);
-                      return (baseAmount * booking.pax).toFixed(2);
-                    })()}</span>
+                    <span>Subtotal ({booking.pax} pax × ₹{booking.ratePerPax})</span>
+                    <span>₹{(booking.pax * booking.ratePerPax).toFixed(2)}</span>
                   </div>
-                  {booking.gst > 0 && (
-                    <div className="flex justify-between">
-                      <span>GST ({booking.gst}%)</span>
-                      <span>₹{(() => {
-                        const baseRate = parseFloat(booking.ratePerPax) || 0;
-                        const gstPercent = parseFloat(booking.gst) || 0;
-                        const baseAmount = baseRate / (1 + gstPercent / 100);
-                        const gstAmount = baseAmount * (gstPercent / 100);
-                        return (gstAmount * booking.pax).toFixed(2);
-                      })()}</span>
-                    </div>
-                  )}
                   {booking.discount > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount ({booking.discount}%)</span>
                       <span>-₹{(() => {
-                        const ratePerPax = parseFloat(booking.ratePerPax) || 0;
-                        const discountPercent = parseFloat(booking.discount) || 0;
-                        const pax = parseInt(booking.pax) || 1;
-                        const discountAmount = (ratePerPax * discountPercent / 100) * pax;
+                        const subtotal = booking.pax * booking.ratePerPax;
+                        const discountAmount = (subtotal * booking.discount) / 100;
                         return discountAmount.toFixed(2);
                       })()}</span>
+                    </div>
+                  )}
+                  {booking.decorationCharge > 0 && (
+                    <div className="flex justify-between">
+                      <span>Decoration Charge</span>
+                      <span>₹{booking.decorationCharge}</span>
+                    </div>
+                  )}
+                  {booking.musicCharge > 0 && (
+                    <div className="flex justify-between">
+                      <span>Music Charge</span>
+                      <span>₹{booking.musicCharge}</span>
                     </div>
                   )}
                   {booking.extraRoomTotalPrice > 0 && (
