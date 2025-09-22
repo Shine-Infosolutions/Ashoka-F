@@ -505,6 +505,16 @@ const ListBooking = () => {
                         </button>
                       </Link>
                     </div>
+                    <div className="flex gap-2 mt-2">
+                      <div className="flex-1">
+                        <ChefPDFPreview booking={item} />
+                      </div>
+                      <Link to={`/invoice/${item._id}`} className="flex-1">
+                        <button className="w-full inline-flex items-center justify-center gap-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors font-semibold px-3 py-2 text-xs">
+                          <FiFileText />
+                        </button>
+                      </Link>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -580,6 +590,12 @@ const ListBooking = () => {
                         <Link to={`/menu-view/${item._id}`}>
                           <button className="inline-flex items-center gap-1 bg-gray-700 text-white rounded-lg shadow hover:bg-yellow-700 transition-colors font-semibold px-3 py-1.5 text-xs">
                             <FiEye /> View Menu
+                          </button>
+                        </Link>
+                        <ChefPDFPreview booking={item} />
+                        <Link to={`/invoice/${item._id}`}>
+                          <button className="inline-flex items-center gap-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors font-semibold px-3 py-1.5 text-xs">
+                            <FiFileText /> 
                           </button>
                         </Link>
                         <button
