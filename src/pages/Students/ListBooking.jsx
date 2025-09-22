@@ -9,6 +9,7 @@ import { FiSearch, FiX, FiPlus, FiEdit, FiEye } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 // import noimg from "../../assets/noimg.png";
 import SlideToggle from "../toggle/SlideToggle";
+import ChefPDFPreview from "../ChefPDFPreview";
 const debounce = (func, delay) => {
   let timeoutId;
   return function (...args) {
@@ -503,6 +504,9 @@ const ListBooking = () => {
                           <FiEye /> View Menu
                         </button>
                       </Link>
+                      <div className="flex-1">
+                        <ChefPDFPreview booking={item} />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -581,6 +585,7 @@ const ListBooking = () => {
                             <FiEye /> View Menu
                           </button>
                         </Link>
+                        <ChefPDFPreview booking={item} />
                         <button
                           onClick={() => {
                             let raw = String(item.number || "").replace(
