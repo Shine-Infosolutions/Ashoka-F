@@ -8,6 +8,7 @@ import AddBooking from "./pages/Students/AddBooking";
 import UpdateBooking from "./pages/Students/UpdateBooking";
 import ListBooking from "./pages/Students/ListBooking";
 import MenuView from "./pages/Students/MenuView";
+import Invoice from "./pages/Students/Invoice";
 
 import logo from "./assets/pcs.png";
 
@@ -314,6 +315,7 @@ const App = () => {
                    <Route path="/list-booking" element={<ListBooking />} />
                    <Route path="/update-booking/:id" element={<UpdateBooking />} />
                    <Route path="/menu-view/:bookingRef" element={<MenuView />} />
+                   <Route path="/invoice/:id" element={<Invoice />} />
            
               </Routes>
             </div>

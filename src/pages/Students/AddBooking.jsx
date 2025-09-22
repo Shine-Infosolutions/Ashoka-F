@@ -316,7 +316,14 @@ const AddBooking = () => {
       );
 
       toast.success("Booking created successfully!");
-      setTimeout(() => navigate("/list-booking"), 600);
+      const bookingId = response.data._id || response.data.id;
+      setTimeout(() => {
+        if (bookingId) {
+          navigate(`/invoice/${bookingId}`);
+        } else {
+          navigate("/list-booking");
+        }
+      }, 600);
       setSubmitSuccess(true);
       setTimeout(() => setSubmitSuccess(false), 1200);
     } catch (err) {

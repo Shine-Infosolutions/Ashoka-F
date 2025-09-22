@@ -587,23 +587,36 @@ function LaganCalendar() {
             {displayBookings.map((b, i) => (
               <div
                 key={i}
-                className="bg-gray-50 border border-gray-200 rounded p-3 text-left cursor-pointer hover:shadow-lg hover:border-[#c3ad6b] transition"
-                onClick={() => {
-                  if (b._id) navigate(`/update-booking/${b._id}`);
-                }}
-                title="Click to update booking"
+                className="bg-gray-50 border border-gray-200 rounded p-3 text-left hover:shadow-lg hover:border-[#c3ad6b] transition"
               >
                 <div className="font-bold text-gray-800">{b.name}</div>
                 <div className="text-xs text-gray-700">
                   Contact: {b.number || b.contact}
                 </div>
-                <div className="tesxt-xs text-gray-700">
-                  {" "}
+                <div className="text-xs text-gray-700">
                   Booking Status: {b.bookingStatus}
                 </div>
                 {b.notes && (
                   <div className="text-xs text-gray-700">{b.notes}</div>
                 )}
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() => {
+                      if (b._id) navigate(`/update-booking/${b._id}`);
+                    }}
+                    className="flex-1 bg-[#c3ad6b] hover:bg-[#b39b5a] text-white px-2 py-1 rounded text-xs font-semibold transition-colors"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (b._id) navigate(`/invoice/${b._id}`);
+                    }}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs font-semibold transition-colors"
+                  >
+                    Invoice
+                  </button>
+                </div>
               </div>
             ))}
           </div>

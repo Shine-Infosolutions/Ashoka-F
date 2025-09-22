@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ColorRing } from "react-loader-spinner";
 import { AiFillFileExcel } from "react-icons/ai";
 import { CSVLink } from "react-csv";
-import { FiSearch, FiX, FiPlus, FiEdit, FiEye } from "react-icons/fi";
+import { FiSearch, FiX, FiPlus, FiEdit, FiEye, FiFileText } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 // import noimg from "../../assets/noimg.png";
 import SlideToggle from "../toggle/SlideToggle";
@@ -503,6 +503,11 @@ const ListBooking = () => {
                           <FiEye /> View Menu
                         </button>
                       </Link>
+                      <Link to={`/invoice/${item._id}`} className="flex-1">
+                        <button className="w-full inline-flex items-center justify-center gap-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors font-semibold px-3 py-2 text-xs">
+                          <FiFileText /> Invoice
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -579,6 +584,11 @@ const ListBooking = () => {
                         <Link to={`/menu-view/${item._id}`}>
                           <button className="inline-flex items-center gap-1 bg-gray-700 text-white rounded-lg shadow hover:bg-yellow-700 transition-colors font-semibold px-3 py-1.5 text-xs">
                             <FiEye /> View Menu
+                          </button>
+                        </Link>
+                        <Link to={`/invoice/${item._id}`}>
+                          <button className="inline-flex items-center gap-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors font-semibold px-3 py-1.5 text-xs">
+                            <FiFileText /> Invoice
                           </button>
                         </Link>
                         <button
