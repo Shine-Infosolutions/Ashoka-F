@@ -447,73 +447,109 @@ const ListBooking = () => {
           <>
             {/* Card view for mobile */}
             <div className="block sm:hidden">
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3">
                 {userData?.map((item) => (
                   <div
                     key={item._id}
-                    className="bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100"
+                    className="bg-white rounded-lg shadow-sm p-3 border border-gray-100"
                   >
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-10 h-10 bg-#c3ad6b rounded-full flex items-center justify-center text-black font-bold text-lg">
-                        {item.name?.[0]?.toUpperCase() || "?"}
-                      </div>
-                      <div>
-                        <div className="font-bold text-lg">{item.name}</div>
-                        <div className="text-gray-500 text-sm">
-                          {item.number}
+                    {/* Header with name and status */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-[#c3ad6b] rounded-full flex items-center justify-center text-white font-bold text-sm">
+                          {item.name?.[0]?.toUpperCase() || "?"}
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm">{item.name}</div>
+                          <div className="text-gray-500 text-xs">{item.number}</div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex flex-col gap-1 text-sm mb-2">
-                      <div>
-                        <span className="font-semibold">Start Date:</span>{" "}
-                        {new Date(item.startDate).toLocaleDateString()}
-                      </div>
-                      <div>
-                        <span className="font-semibold">Rate Plan:</span>{" "}
-                        {item.ratePlan}
-                      </div>
-                      <div>
-                        <span className="font-semibold">Type:</span>{" "}
-                        {item.foodType}
-                      </div>
-                      <div>
-                        <span className="font-semibold">Advance:</span>{" "}
-                        {item?.advance !== null && item?.advance !== undefined
-                          ? item?.advance
-                          : 0}
-                      </div>
-                      <div>
-                        <span className="font-semibold">Total Amount:</span>{" "}
-                        {item.total}
-                      </div>
-                      <div>
-                        <span className="font-semibold">Status:</span>{" "}
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        item.bookingStatus === 'Confirmed' 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
                         {item.bookingStatus}
+                      </span>
+                    </div>
+                    
+                    {/* Details in compact grid */}
+                    <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+                      <div className="bg-gray-50 p-2 rounded">
+                        <div className="text-gray-500">Date</div>
+                        <div className="font-semibold">{new Date(item.startDate).toLocaleDateString()}</div>
+                      </div>
+                      <div className="bg-gray-50 p-2 rounded">
+                        <div className="text-gray-500">Plan</div>
+                        <div className="font-semibold">{item.ratePlan}</div>
+                      </div>
+                      <div className="bg-gray-50 p-2 rounded">
+                        <div className="text-gray-500">Type</div>
+                        <div className="font-semibold">{item.foodType}</div>
+                      </div>
+                      <div className="bg-gray-50 p-2 rounded">
+                        <div className="text-gray-500">Hall</div>
+                        <div className="font-semibold">{item.hall || 'N/A'}</div>
                       </div>
                     </div>
-                    <div className="flex gap-2 mt-2">
+                    
+                    {/* Amount info */}
+                    <div className="flex justify-between items-center mb-3 p-2 bg-[#c3ad6b]/10 rounded">
+                      <div className="text-xs">
+                        <span className="text-gray-600">Advance: </span>
+                        <span className="font-semibold">₹{item?.advance || 0}</span>
+                      </div>
+                      <div className="text-xs">
+                        <span className="text-gray-600">Total: </span>
+                        <span className="font-semibold">₹{item.total || 0}</span>
+                      </div>
+                    </div>
+                    
+                    {/* Action buttons - more compact */}
+                    <div className="grid grid-cols-2 gap-2">
                       <Link
                         to={`/update-booking/${item._id}`}
-                        className="flex-1 inline-flex items-center justify-center gap-1 bg-gold hover:bg-yellow-700 text-white px-3 py-2 rounded shadow text-xs font-semibold transition-colors"
+                        className="inline-flex items-center justify-center gap-1 bg-[#c3ad6b] hover:bg-yellow-700 text-white px-2 py-1.5 rounded text-xs font-medium transition-colors"
                       >
-                        <FiEdit /> Edit
+                        <FiEdit className="w-3 h-3" /> Edit
                       </Link>
-                      <Link to={`/menu-view/${item._id}`} className="flex-1">
-                        <button className="w-full inline-flex items-center justify-center gap-1 bg-gray-700 text-white rounded-lg shadow hover:bg-yellow-700 transition-colors font-semibold px-3 py-2 text-xs">
-                          <FiEye /> View Menu
+                      <Link to={`/menu-view/${item._id}`}>
+                        <button className="w-full inline-flex items-center justify-center gap-1 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors font-medium px-2 py-1.5 text-xs">
+                          <FiEye className="w-3 h-3" /> Menu
                         </button>
                       </Link>
                     </div>
-                    <div className="flex gap-2 mt-2">
-                      <div className="flex-1">
+                    
+                    {/* Secondary actions */}
+                    <div className="grid grid-cols-3 gap-1 mt-2">
+                      <div className="w-full">
                         <ChefPDFPreview booking={item} />
                       </div>
-                      <Link to={`/invoice/${item._id}`} className="flex-1">
-                        <button className="w-full inline-flex items-center justify-center gap-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors font-semibold px-3 py-2 text-xs">
-                          <FiFileText />
+                      <Link to={`/invoice/${item._id}`} className="w-full">
+                        <button className="w-full inline-flex items-center justify-center gap-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-medium px-2 py-1.5 text-xs">
+                          <FiFileText className="w-3 h-3" />
                         </button>
                       </Link>
+                      <button
+                        onClick={() => {
+                          let raw = String(item.number || "").replace(/[^\d]/g, "");
+                          raw = raw.replace(/^0+/, "");
+                          let phoneNumber = "";
+                          if (raw.length === 10) {
+                            phoneNumber = `91${raw}`;
+                          } else if (raw.length === 12 && raw.startsWith("91")) {
+                            phoneNumber = raw;
+                          } else {
+                            toast.error("Invalid phone number for WhatsApp.");
+                            return;
+                          }
+                          const message = `🌟 *Welcome to Hotel ASHOKA!* 🌟\n\nBooking Details:\n📅 Date: ${new Date(item.startDate).toLocaleDateString()}\n👤 Name: ${item.name}\n📞 Contact: ${item.number}\n🍽️ Plan: ${item.ratePlan}\n🥗 Type: ${item.foodType}\n🏛️ Hall: ${item.hall}\n💵 Total: ₹${item.total || 'TBC'}\n🔄 Status: ${item.bookingStatus}\n\nThank you for choosing us! 🙏`;
+                          window.open(`https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`, "_blank");
+                        }}
+                        className="w-full inline-flex items-center justify-center gap-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-medium px-2 py-1.5 text-xs"
+                      >
+                        <FaWhatsapp className="w-3 h-3" />
+                      </button>
                     </div>
                   </div>
                 ))}
